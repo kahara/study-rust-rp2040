@@ -105,7 +105,7 @@ fn main() -> ! {
             w
         });
 
-        cortex_m::asm::delay(1_000_000);
+        cortex_m::asm::delay(100_000);
 
         info!("off!");
         p.IO_BANK0.gpio[led_pin].gpio_ctrl.write(|w| {
@@ -114,6 +114,6 @@ fn main() -> ! {
             w
         });
 
-        cortex_m::asm::delay(1_000_000);
+        cortex_m::asm::delay(100_000);
     }
 }
