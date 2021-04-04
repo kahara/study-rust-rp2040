@@ -16,3 +16,7 @@ Cargo.lock
 
 # JetBrains
 **/.idea
+
+# Build artifacts
+study-rust-rp2040.bin
+study-rust-rp2040.uf2
