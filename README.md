@@ -1,6 +1,6 @@
 # study-rust-rp2040
-Waiting for more hardware to arrive for Pico probing. Meanwhile using
-[pico-debug](https://github.com/majbthrd/pico-debug/).
+
+For learning embedded Rust. Because sometimes being more constrained is a good thing.
 
 ## Prerequisites
 
@@ -16,37 +16,9 @@ cargo install uf2conv cargo-binutils
 ```
 # E.g., /etc/udev/rules.d/80-picoprobe.rules
 ATTRS{idVendor}=="2e8a", ATTRS{idProduct}=="0004", MODE="660", GROUP="plugdev", TAG+="uaccess"
-ATTRS{idVendor}=="1209", ATTRS{idProduct}=="2488", MODE="660", GROUP="plugdev", TAG+="uaccess"
-```
-
-## pico-debug
-
-Prep an ELF format file for debugging:
-
-```console
-cargo objcopy -- -O elf32-littlearm study-rust-rp2040.elf
-```
-
-Run `pico-debug` and connect with `gdb`:
-
-```console
-curl -L -o /path/to/mounted/pico/fs/pico-debug-gimmecache.uf2 https://github.com/majbthrd/pico-debug/releases/download/v10.03/pico-debug-gimmecache.uf2
-openocd -f interface/cmsis-dap.cfg -c "transport select swd" -c "adapter speed 4000" -f target/rp2040-core0.cfg
-gdb-multiarch study-rust-rp2040.elf
-```
-
-In `gdb`:
-
-```
-target extended-remote localhost:3333
-load
-monitor reset init  # still halted here
-continue  # run the program
 ```
 
 ## picoprobe
-
-**Not tested yet, lack of hardware.**
 
 Build
 [picoprobe](https://github.com/raspberrypi/picoprobe)
@@ -85,7 +57,7 @@ Then copy `picoprobe.uf2` to the Pico board.
 Connect with `gdb`:
 
 ```console
-openocd -f interface/cmsis-dap.cfg -c "transport select swd" -c "adapter speed 4000" -f target/rp2040.cfg
+openocd -f interface/picoprobe.cfg -f target/rp2040.cfg
 gdb-multiarch study-rust-rp2040.elf
 ```
 
