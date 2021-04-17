@@ -82,7 +82,8 @@ Then,
 cargo run
 ```
 
-This runs `probe-run-rp --chip RP2040 target/thumbv6m-none-eabi/debug/study-rust-rp2040` automagically.
+This should run `probe-run-rp --chip RP2040 target/thumbv6m-none-eabi/debug/study-rust-rp2040` automagically
+(but not tested yet).
 
 ## Deploy
 
