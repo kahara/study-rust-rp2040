@@ -53,6 +53,11 @@ make
 
 Then copy `picoprobe.uf2` to the Pico board.
 
+Prep an ELF format file for debugging:
+
+```console
+cargo objcopy -- -O elf32-littlearm study-rust-rp2040.elf  # FIXME: automate this step in "cargo build"
+```
 
 Connect with `gdb`:
 
