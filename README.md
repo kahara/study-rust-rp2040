@@ -90,6 +90,16 @@ cargo run
 This should run `probe-run-rp --chip RP2040 target/thumbv6m-none-eabi/debug/study-rust-rp2040` automagically
 (but not tested yet).
 
+## Assorted useful things
+
+```console
+arm-none-eabi-objdump -CD target/thumbv6m-none-eabi/debug/study-rust-rp2040  # --demangle --disassemble-all 
+```
+
+```
+arm-none-eabi-objdump -t study-rust-rp2040.elf  # --syms
+```
+
 ## Deploy
 
 To create a flash-able artifact:
