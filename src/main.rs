@@ -43,17 +43,17 @@ fn init(
     // Reset everything except:
     // - QSPI (we're using it to run this code!)
     // - PLLs (it may be suicide if that's what's clocking us)
-    resets.reset(!(resets::IO_QSPI | resets::PADS_QSPI | resets::PLL_SYS | resets::PLL_USB | resets::UART0 | resets::UART1));
+    resets.reset(!(resets::IO_QSPI | resets::PADS_QSPI | resets::PLL_SYS | resets::PLL_USB));
 
     resets.unreset_wait(
         resets::ALL
             & !(resets::ADC
-                | resets::RTC
-                | resets::SPI0
-                | resets::SPI1)
-                //| resets::UART0
-                //| resets::UART1
-                //| resets::USBCTRL),
+            | resets::RTC
+            | resets::SPI0
+            | resets::SPI1
+            | resets::UART0
+            | resets::UART1
+            | resets::USBCTRL),
     );
 
     // xosc 12 mhz
@@ -80,40 +80,43 @@ fn init(
     clocks.clk_ref_ctrl.modify(|_, w| w.src().rosc_clksrc_ph());
     while clocks.clk_ref_selected.read().bits() != 1 {}
 
-    resets.reset(resets::PLL_SYS); // | resets::PLL_USB);
-    resets.unreset_wait(resets::PLL_SYS); // | resets::PLL_USB);
+    resets.reset(resets::PLL_SYS | resets::PLL_USB);
+    resets.unreset_wait(resets::PLL_SYS | resets::PLL_USB);
 
     pll::PLL::new(pll_sys).configure(1, 1500_000_000, 6, 2);
-    //pll::PLL::new(pll_usb).configure(1, 480_000_000, 5, 2);
+    pll::PLL::new(pll_usb).configure(1, 480_000_000, 5, 2);
 }
 
 #[entry]
 fn main() -> ! {
-    //info!("Hello World!");
+    info!("Hello World!");
 
     let p = pac::Peripherals::take().unwrap();
 
     init(p.RESETS, p.WATCHDOG, p.CLOCKS, p.XOSC, p.PLL_SYS, p.PLL_USB);
 
     let led_pin = 25;
+    let mut count: u128 = 0;
 
     loop {
-        //info!("on!");
+        count += 1;
+
+        info!("on!");
         p.IO_BANK0.gpio[led_pin].gpio_ctrl.write(|w| {
             w.oeover().enable();
             w.outover().high();
             w
         });
 
-        cortex_m::asm::delay(100_000);
+        cortex_m::asm::delay(1000);
 
-        //info!("off!");
+        info!("off!");
         p.IO_BANK0.gpio[led_pin].gpio_ctrl.write(|w| {
             w.oeover().enable();
             w.outover().low();
             w
         });
 
-        cortex_m::asm::delay(100_000);
+        cortex_m::asm::delay(1_000_000);
     }
 }

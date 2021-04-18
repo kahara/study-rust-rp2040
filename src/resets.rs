@@ -1,4 +1,4 @@
-#![allow(unused_imports, dead_code)]
+#![allow(unused_imports, dead_code, unused_variables)]
 
 use rp2040_pac as pac;
 
