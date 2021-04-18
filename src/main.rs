@@ -89,28 +89,21 @@ fn init(
 
 #[entry]
 fn main() -> ! {
-    info!("Hello World!");
-
     let p = pac::Peripherals::take().unwrap();
 
     init(p.RESETS, p.WATCHDOG, p.CLOCKS, p.XOSC, p.PLL_SYS, p.PLL_USB);
 
     let led_pin = 25;
-    let mut count: u128 = 0;
 
     loop {
-        count += 1;
-
-        info!("on!");
         p.IO_BANK0.gpio[led_pin].gpio_ctrl.write(|w| {
             w.oeover().enable();
             w.outover().high();
             w
         });
 
-        cortex_m::asm::delay(1000);
+        cortex_m::asm::delay(10_000);
 
-        info!("off!");
         p.IO_BANK0.gpio[led_pin].gpio_ctrl.write(|w| {
             w.oeover().enable();
             w.outover().low();
