@@ -53,6 +53,8 @@ make
 
 Then copy `picoprobe.uf2` to the Pico board.
 
+## Debugging
+
 Prep an ELF format file for debugging:
 
 ```console
