@@ -75,6 +75,9 @@ monitor reset init  # still halted here
 continue  # run the program
 ```
 
+If in JetBrains CLion, set GDB Remote Debug configuration's "target remote" as above and point "symbol file"
+to the ELF file.
+
 ## probe-run
 
 ```console
