@@ -80,6 +80,10 @@ to the ELF file.
 
 ## probe-run
 
+This needs
+[probe-rs](https://github.com/rp-rs/probe-rs)
+too.
+
 ```console
 cargo install --git https://github.com/rp-rs/probe-run --branch main
 ```
