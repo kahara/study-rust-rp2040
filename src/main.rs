@@ -94,17 +94,18 @@ fn main() -> ! {
     init(p.RESETS, p.WATCHDOG, p.CLOCKS, p.XOSC, p.PLL_SYS, p.PLL_USB);
 
     let led_pin = 25;
+    let led = &p.IO_BANK0.gpio[led_pin].gpio_ctrl;
 
     loop {
-        p.IO_BANK0.gpio[led_pin].gpio_ctrl.write(|w| {
+        led.write(|w| {
             w.oeover().enable();
             w.outover().high();
             w
         });
 
-        cortex_m::asm::delay(10_000);
+        cortex_m::asm::delay(100_000);
 
-        p.IO_BANK0.gpio[led_pin].gpio_ctrl.write(|w| {
+        led.write(|w| {
             w.oeover().enable();
             w.outover().low();
             w
