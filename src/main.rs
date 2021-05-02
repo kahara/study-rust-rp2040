@@ -101,38 +101,42 @@ fn main() -> ! {
     adc.cs.write(|w| w.start_many().set_bit());
 
     loop {
-        let result = adc.result.read().result().bits();
+        led.write(|w| {
+            w.oeover().enable();
+            w.outover().high();
+            w
+        });
 
-        if (0x1 & bit) != 0 {
-            led.write(|w| {
-                w.oeover().enable();
-                w.outover().high();
-                w
-            });
-        } else{
-            led.write(|w| {
-                w.oeover().enable();
-                w.outover().low();
-                w
-            });
-        }
+        cortex_m::asm::delay(10_000);
+
+       led.write(|w| {
+            w.oeover().enable();
+            w.outover().low();
+            w
+        });
+
+        cortex_m::asm::delay(1_000_000);
     }
 
+    // ATTENTION ATTENTION ATTENTION
+    // don't do this, or at least consult the datasheet before attempting to do anything with the ADC
+    // fried a second Pico board already
     //loop {
-    //    led.write(|w| {
-    //        w.oeover().enable();
-    //        w.outover().high();
-    //        w
-    //    });
+    //    let result = adc.result.read().result().bits();
 
-    //    cortex_m::asm::delay(10_000);
-
-    //    led.write(|w| {
-    //        w.oeover().enable();
-    //        w.outover().low();
-    //        w
-    //    });
-
-    //    cortex_m::asm::delay(1_000_000);
+    //    if (0x1 & bit) != 0 {
+    //        led.write(|w| {
+    //            w.oeover().enable();
+    //            w.outover().high();
+    //            w
+    //        });
+    //    } else{
+    //        led.write(|w| {
+    //            w.oeover().enable();
+    //            w.outover().low();
+    //            w
+    //        });
+    //    }
     //}
+
 }
