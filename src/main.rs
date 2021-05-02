@@ -95,22 +95,44 @@ fn main() -> ! {
 
     let led_pin = 25;
     let led = &p.IO_BANK0.gpio[led_pin].gpio_ctrl;
+    let adc = &p.ADC;
+    let bit: u16 = 0b1;
+
+    adc.cs.write(|w| w.start_many().set_bit());
 
     loop {
-        led.write(|w| {
-            w.oeover().enable();
-            w.outover().high();
-            w
-        });
+        let result = adc.result.read().result().bits();
 
-        cortex_m::asm::delay(100_000);
-
-        led.write(|w| {
-            w.oeover().enable();
-            w.outover().low();
-            w
-        });
-
-        cortex_m::asm::delay(1_000_000);
+        if (0x1 & bit) != 0 {
+            led.write(|w| {
+                w.oeover().enable();
+                w.outover().high();
+                w
+            });
+        } else{
+            led.write(|w| {
+                w.oeover().enable();
+                w.outover().low();
+                w
+            });
+        }
     }
+
+    //loop {
+    //    led.write(|w| {
+    //        w.oeover().enable();
+    //        w.outover().high();
+    //        w
+    //    });
+
+    //    cortex_m::asm::delay(10_000);
+
+    //    led.write(|w| {
+    //        w.oeover().enable();
+    //        w.outover().low();
+    //        w
+    //    });
+
+    //    cortex_m::asm::delay(1_000_000);
+    //}
 }
