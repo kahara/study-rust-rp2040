@@ -95,10 +95,6 @@ fn main() -> ! {
 
     let led_pin = 25;
     let led = &p.IO_BANK0.gpio[led_pin].gpio_ctrl;
-    let adc = &p.ADC;
-    let bit: u16 = 0b1;
-
-    adc.cs.write(|w| w.start_many().set_bit());
 
     loop {
         led.write(|w| {
@@ -121,9 +117,11 @@ fn main() -> ! {
     // ATTENTION ATTENTION ATTENTION
     // don't do this, or at least consult the datasheet before attempting to do anything with the ADC
     // fried a second Pico board already
+    //let adc = &p.ADC;
+    //let bit: u16 = 0b1;
+    //adc.cs.write(|w| w.start_many().set_bit());
     //loop {
     //    let result = adc.result.read().result().bits();
-
     //    if (0x1 & bit) != 0 {
     //        led.write(|w| {
     //            w.oeover().enable();
@@ -138,5 +136,4 @@ fn main() -> ! {
     //        });
     //    }
     //}
-
 }
