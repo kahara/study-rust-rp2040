@@ -80,7 +80,7 @@ continue  # run the program
 If in JetBrains CLion, set GDB Remote Debug configuration's "target remote" as above and point "symbol file"
 to the ELF file.
 
-## probe-run
+## probe-run (not tested)
 
 This needs
 [probe-rs](https://github.com/rp-rs/probe-rs)
