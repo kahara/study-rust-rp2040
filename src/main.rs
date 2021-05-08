@@ -10,6 +10,8 @@ use defmt_rtt as _;
 use pac::{watchdog, xosc};
 use panic_probe as _;
 use rp2040_pac as pac;
+use rp2040_pac::generic::Reg;
+use rp2040_pac::pio0::sm::SM_CLKDIV;
 
 mod pll;
 mod resets;
@@ -93,26 +95,22 @@ fn main() -> ! {
 
     init(p.RESETS, p.WATCHDOG, p.CLOCKS, p.XOSC, p.PLL_SYS, p.PLL_USB);
 
-    let led_pin = 25;
-    let led = &p.IO_BANK0.gpio[led_pin].gpio_ctrl;
-
-    loop {
-        led.write(|w| {
-            w.oeover().enable();
-            w.outover().high();
-            w
-        });
-
-        cortex_m::asm::delay(10_000);
-
-       led.write(|w| {
-            w.oeover().enable();
-            w.outover().low();
-            w
-        });
-
-        cortex_m::asm::delay(1_000_000);
-    }
+    //let led_pin = 25;
+    //let led = &p.IO_BANK0.gpio[led_pin].gpio_ctrl;
+    //loop {
+    //    led.write(|w| {
+    //        w.oeover().enable();
+    //        w.outover().high();
+    //        w
+    //    });
+    //    cortex_m::asm::delay(10_000);
+    //   led.write(|w| {
+    //        w.oeover().enable();
+    //        w.outover().low();
+    //        w
+    //    });
+    //    cortex_m::asm::delay(1_000_000);
+    //}
 
     // ATTENTION ATTENTION ATTENTION
     // don't do this, or at least consult the datasheet before attempting to do anything with the ADC
