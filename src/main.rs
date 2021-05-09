@@ -12,6 +12,7 @@ use panic_probe as _;
 use rp2040_pac as pac;
 use rp2040_pac::generic::Reg;
 use rp2040_pac::pio0::sm::SM_CLKDIV;
+use rp2040_pac::pio0::sm::SM_PINCTRL;
 
 mod pll;
 mod resets;
@@ -94,6 +95,61 @@ fn main() -> ! {
     let p = pac::Peripherals::take().unwrap();
 
     init(p.RESETS, p.WATCHDOG, p.CLOCKS, p.XOSC, p.PLL_SYS, p.PLL_USB);
+
+    let pio= &p.PIO0;
+    let instr = &pio.instr_mem;
+    let ctrl: &rp2040_pac::pio0::CTRL = &pio.ctrl;
+    let sm: &rp2040_pac::pio0::SM = &pio.sm[0];
+    let clk_int: u16 = 65535;
+    let clk_frac:u8 = 0;
+    let led_pin = 25;
+    let led = &p.IO_BANK0.gpio[led_pin].gpio_ctrl;
+
+    #[allow(clippy::unusual_byte_groupings)]
+    let jmp = 0b000_00000_000_00000; // JMP 0
+
+    instr[0].write(|w| unsafe { w.bits(0xe099); w });
+    instr[1].write(|w| unsafe { w.bits(0xe101); w });
+    instr[2].write(|w| unsafe { w.bits(0xe000); w });
+    instr[3].write(|w| unsafe { w.bits(0x0001); w });
+
+    // allow LED pin to be controlled by PIO
+    led.write(|w| {
+        w.funcsel().pio0_0();
+        w.oeover().enable();
+        w.outover().normal();
+        w
+    });
+
+    // set PIO output pin to LED
+    sm.sm_pinctrl.write(|w| unsafe {
+        w.set_base().bits(led_pin as u8);
+        w.set_count().bits(1);
+        w
+    });
+
+    // set PIO clock divisor
+    sm.sm_clkdiv.write(|w| {
+        unsafe {
+            w.int().bits(clk_int);
+            w.frac().bits(clk_frac);
+        }
+        w
+    });
+
+    // restart state machine
+    ctrl.write(|w| unsafe { w.sm_restart().bits(1) });
+
+    // restart clock divisor
+    ctrl.write(|w| unsafe { w.clkdiv_restart().bits(1) });
+
+    // jump to the beginning
+    sm.sm_instr.write(|w| unsafe { w.sm0_instr().bits(jmp) });
+
+    // enable the state machine
+    ctrl.write(|w| unsafe { w.sm_enable().bits(1) });
+
+    loop {}
 
     //let led_pin = 25;
     //let led = &p.IO_BANK0.gpio[led_pin].gpio_ctrl;
