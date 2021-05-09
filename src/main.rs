@@ -109,8 +109,8 @@ fn main() -> ! {
     let jmp = 0b000_00000_000_00000; // JMP 0
 
     instr[0].write(|w| unsafe { w.bits(0xe099); w });
-    instr[1].write(|w| unsafe { w.bits(0xe101); w });
-    instr[2].write(|w| unsafe { w.bits(0xe000); w });
+    instr[1].write(|w| unsafe { w.bits(0xff01); w });
+    instr[2].write(|w| unsafe { w.bits(0xff00); w });
     instr[3].write(|w| unsafe { w.bits(0x0001); w });
 
     // allow LED pin to be controlled by PIO
@@ -170,7 +170,7 @@ fn main() -> ! {
 
     // ATTENTION ATTENTION ATTENTION
     // don't do this, or at least consult the datasheet before attempting to do anything with the ADC
-    // fried a second Pico board already
+    // fried a ~second~ third Pico board already
     //let adc = &p.ADC;
     //let bit: u16 = 0b1;
     //adc.cs.write(|w| w.start_many().set_bit());

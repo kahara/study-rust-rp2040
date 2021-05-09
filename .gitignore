@@ -21,3 +21,4 @@ Cargo.lock
 study-rust-rp2040.bin
 study-rust-rp2040.elf
 study-rust-rp2040.uf2
+*.hex
