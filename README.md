@@ -53,6 +53,16 @@ make
 
 Then copy `picoprobe.uf2` to the Pico board.
 
+## Running the PIO assembler
+
+```console
+docker run \
+    --rm \
+    -v $PWD:/source jonikahara/pioasm:0.1.0 \
+    -o hex /source/squarewave.pio \
+    > squarewave.hex
+```
+
 ## Debugging
 
 Prep an ELF format file for debugging:
