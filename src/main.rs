@@ -1,18 +1,12 @@
 #![no_std]
 #![no_main]
 #![feature(asm)]
-#![allow(unused_imports, dead_code, unused_variables)]
 
 use core::sync::atomic::{AtomicUsize, Ordering};
 use cortex_m_rt::entry;
-use defmt::*;
 use defmt_rtt as _;
-use pac::{watchdog, xosc};
 use panic_probe as _;
 use rp2040_pac as pac;
-use rp2040_pac::generic::Reg;
-use rp2040_pac::pio0::sm::SM_CLKDIV;
-use rp2040_pac::pio0::sm::SM_PINCTRL;
 
 mod pll;
 mod resets;
