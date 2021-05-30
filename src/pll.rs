@@ -1,5 +1,4 @@
 use core::ops::Deref;
-
 use rp2040_pac as pac;
 
 const XOSC_MHZ: u32 = 12;

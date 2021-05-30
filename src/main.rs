@@ -81,7 +81,7 @@ fn init(
     resets.reset(resets::PLL_SYS | resets::PLL_USB);
     resets.unreset_wait(resets::PLL_SYS | resets::PLL_USB);
 
-    pll::PLL::new(pll_sys).configure(1, 1200_000_000, 6, 1);
+    pll::PLL::new(pll_sys).configure(1, 888_000_000, 3, 1);
     pll::PLL::new(pll_usb).configure(1, 480_000_000, 5, 2);
 
     // Switch clk_sys to pll_sys
