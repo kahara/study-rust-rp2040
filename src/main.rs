@@ -104,10 +104,10 @@ fn main() -> ! {
     let instr = &pio.instr_mem;
     let ctrl: &rp2040_pac::pio0::CTRL = &pio.ctrl;
     let sm: &rp2040_pac::pio0::SM = &pio.sm[0];
-    let clk_int: u16 = 65535;
+    let clk_int: u16 = 128;  //65535;
     let clk_frac: u8 = 0;
-    let led_pin = 25;
-    let led = &p.IO_BANK0.gpio[led_pin].gpio_ctrl;
+    let output = 15;
+    let output_pin = &p.IO_BANK0.gpio[output].gpio_ctrl;
 
     #[allow(clippy::unusual_byte_groupings)]
     let jmp = 0b000_00000_000_00000; // JMP 0
@@ -141,7 +141,7 @@ fn main() -> ! {
     }
 
     // allow LED pin to be controlled by PIO
-    led.write(|w| {
+    output_pin.write(|w| {
         w.funcsel().pio0_0();
         w.oeover().enable();
         w.outover().normal();
@@ -150,7 +150,7 @@ fn main() -> ! {
 
     // set PIO output pin to LED
     sm.sm_pinctrl.write(|w| unsafe {
-        w.set_base().bits(led_pin as u8);
+        w.set_base().bits(output as u8);
         w.set_count().bits(1);
         w
     });
