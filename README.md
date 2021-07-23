@@ -74,7 +74,7 @@ cargo objcopy -- -O elf32-littlearm study-rust-rp2040.elf  # FIXME: automate thi
 Connect with `gdb`:
 
 ```console
-openocd -f interface/picoprobe.cfg -f target/rp2040.cfg
+openocd -f interface/picoprobe.cfg -f target/rp2040.cfg  # add e.g. "-c 'bindto 0.0.0.0'" for remote access
 gdb-multiarch study-rust-rp2040.elf
 ```
 
