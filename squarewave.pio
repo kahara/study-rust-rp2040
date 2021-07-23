@@ -5,35 +5,10 @@
 ;
 
 .program squarewave
-    set pindirs, 25   ; Set pin to output
+    set pindirs, 15   ; Set pin to output
 again:
     set pins, 1 [31]  ; Drive pin high and then delay
-    mov x, null [31]  ; Spend some time
-    mov x, null [31]
-    mov x, null [31]
-    mov x, null [31]
-    mov x, null [31]
-    mov x, null [31]
-    mov x, null [31]
-    mov x, null [31]
-    mov x, null [31]
-    mov x, null [31]
-    mov x, null [31]
-    mov x, null [31]
-    mov x, null [31]
-    mov x, null [31]
-    set pins, 0 [31]  ; Drive pin low and delay
-    mov x, null [31]
-    mov x, null [31]
-    mov x, null [31]
-    mov x, null [31]
-    mov x, null [31]
-    mov x, null [31]
-    mov x, null [31]
-    mov x, null [31]
-    mov x, null [31]
-    mov x, null [31]
-    mov x, null [31]
-    mov x, null [31]
-    mov x, null [31]
-    jmp again         ; Set PC to label `again`
+    set pins, 0 [30]  ; Drive pin low and delay
+    jmp again
+
+;    mov x, null [31]  ; Spend some time

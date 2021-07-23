@@ -104,7 +104,7 @@ fn main() -> ! {
     let instr = &pio.instr_mem;
     let ctrl: &rp2040_pac::pio0::CTRL = &pio.ctrl;
     let sm: &rp2040_pac::pio0::SM = &pio.sm[0];
-    let clk_int: u16 = 128;  //65535;
+    let clk_int: u16 = 10;  // 462.5 kHz @ 296 MHz, program 32 + 31 + 1
     let clk_frac: u8 = 0;
     let output = 15;
     let output_pin = &p.IO_BANK0.gpio[output].gpio_ctrl;
@@ -113,32 +113,28 @@ fn main() -> ! {
     let jmp = 0b000_00000_000_00000; // JMP 0
 
     instr[0].write(|w| unsafe {
-        w.bits(0xe099);
+        w.bits(0xe08f);
         w
     });
     instr[1].write(|w| unsafe {
         w.bits(0xff01);
         w
     });
-
-    for slot in 2..15 {
-        instr[slot].write(|w| unsafe {
-            w.bits(0xbf23);
-            w
-        });
-    }
-
-    instr[16].write(|w| unsafe {
-        w.bits(0xff00);
+    instr[2].write(|w| unsafe {
+        w.bits(0xfe00);
+        w
+    });
+    instr[3].write(|w| unsafe {
+        w.bits(0x0001);
         w
     });
 
-    for slot in 17..29 {
-        instr[slot].write(|w| unsafe {
-            w.bits(0xbf23);
-            w
-        });
-    }
+    //for slot in 2..15 {
+    //    instr[slot].write(|w| unsafe {
+    //        w.bits(0xbf23);
+    //        w
+    //    });
+    //}
 
     // allow LED pin to be controlled by PIO
     output_pin.write(|w| {
